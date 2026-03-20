@@ -69,6 +69,7 @@
 - **标题**（智能标题逻辑，见下文）：`.session-title`，`font-weight: 600`，`font-size: 15px`，`margin-bottom: 12px`
 - **副标题**（firstPrompt 预览，仅当与标题不同时显示）：`.session-subtitle`，`color: var(--text-secondary)`，`font-size: 12px`，`opacity: 0.85`
 - **元信息行**：修改时间、消息数、git 分支（`.session-meta`，增加顶部间距）
+- **Session ID**：`.session-id`，等宽字体显示后 8 位短哈希（如 `#217ab29f`），右对齐低透明度，hover 变亮，点击复制完整 session ID 到剪贴板（`stopPropagation` 不触发卡片跳转）
 - **标签列表**：`.session-tags`
 - **收藏星标**：`.session-star`（仅收藏的会话在标题左侧显示）
 

@@ -547,12 +547,16 @@
       html += '<div class="session-subtitle">' + escapeHtml(truncatedSubtitle) + '</div>';
     }
 
-    // Meta row: date, message count, branch
+    // Meta row: date, message count, branch, session ID
     html += '<div class="session-meta">';
     html += '<span class="session-date">' + escapeHtml(formatTime(session.modified)) + '</span>';
     html += '<span class="session-msg-count">' + escapeHtml(String(session.messageCount || 0)) + ' messages</span>';
     if (session.gitBranch) {
       html += '<span class="session-branch">' + escapeHtml(session.gitBranch) + '</span>';
+    }
+    if (session.sessionId) {
+      var shortId = session.sessionId.length > 8 ? session.sessionId.slice(-8) : session.sessionId;
+      html += '<span class="session-id" title="Click to copy: ' + escapeHtml(session.sessionId) + '" data-sid="' + escapeHtml(session.sessionId) + '">#' + escapeHtml(shortId) + '</span>';
     }
     html += '</div>';
 
@@ -566,6 +570,19 @@
     }
 
     card.innerHTML = html;
+
+    // Click to copy session ID
+    var sidEl = card.querySelector('.session-id');
+    if (sidEl) {
+      sidEl.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var fullId = this.getAttribute('data-sid');
+        navigator.clipboard.writeText(fullId).then(function () {
+          showToast('Session ID copied');
+        });
+      });
+    }
+
     return card;
   }
 
