@@ -35,6 +35,7 @@ node server.js
 
 - [会话管理](session-management.md) - 重命名、收藏/置顶、标签管理
 - [导出](export.md) - Markdown/JSON 文件下载、剪贴板复制
+- [恢复会话](conversation-detail.md#恢复会话) - 一键打开终端恢复 CLI 会话（Claude --resume / Codex resume）
 
 ### 数据统计
 
@@ -53,7 +54,7 @@ node server.js
 
 - [技术架构](architecture.md) - 技术栈、前后端模块关系、数据流
 - [数据存储](data-storage.md) - JSONL 解析、sidecar 元数据、内存缓存
-- [API 参考](api-reference.md) - 9 个后端接口完整文档
+- [API 参考](api-reference.md) - 10 个后端接口完整文档
 
 ## 技术栈
 

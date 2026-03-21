@@ -93,6 +93,7 @@
 - **收藏** — 星标收藏，收藏的会话在列表中置顶显示
 - **标签** — 自定义标签，支持输入新标签和从已有标签中选择
 - **导出** — 三种格式：Markdown 文件下载、JSON 文件下载、复制到剪贴板
+- **恢复会话** — 一键打开系统终端，自动定位到项目目录并恢复 CLI 会话（Claude `--resume` / Codex `resume`）
 
 ### 界面
 
@@ -181,7 +182,7 @@ node server.js
 
 ```
 cli-history-hub/
-  server.js                 # 后端：Express 服务器 + 9 个 API + 双数据源解析
+  server.js                 # 后端：Express 服务器 + 10 个 API + 双数据源解析
   package.json              # 项目配置（唯一依赖：express）
   LICENSE                   # CC BY-NC-SA 4.0
   public/
@@ -224,7 +225,7 @@ cli-history-hub/
 
 ## API
 
-共 9 个后端接口，详见 [API 参考文档](docs/api-reference.md)。
+共 10 个后端接口，详见 [API 参考文档](docs/api-reference.md)。
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
@@ -237,6 +238,7 @@ cli-history-hub/
 | GET | `/api/tags` | 标签列表 |
 | GET | `/api/timeline` | 时间线热力图数据 |
 | GET | `/api/prompts` | 用户 Prompt 列表 |
+| POST | `/api/open-terminal` | 打开系统终端恢复会话 |
 
 ## 文档
 
@@ -255,7 +257,7 @@ cli-history-hub/
 - [深色/浅色主题](docs/theme.md) — CSS 变量方案、持久化
 - [Codex CLI 集成](docs/codex-integration.md) — Codex 数据源接入、透传适配
 - [数据存储](docs/data-storage.md) — JSONL 解析、sidecar、缓存
-- [API 参考](docs/api-reference.md) — 9 个接口完整文档
+- [API 参考](docs/api-reference.md) — 10 个接口完整文档
 
 ## License
 
