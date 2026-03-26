@@ -135,6 +135,7 @@ const XML_STRIP_TAGS = [
   "customName": "用户自定义会话名",
   "tags": ["tag1", "tag2"],
   "isFavorite": true,
+  "isDeleted": false,
   "updatedAt": "2026-03-19T12:00:00Z"
 }
 ```

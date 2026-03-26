@@ -10,7 +10,8 @@ window.Features = (function () {
   let renameModal, renameInput, renameSaveBtn, renameCancelBtn;
   let tagModal, tagInput, tagList, tagSuggestions, tagCloseBtn;
   let exportModal, exportMdBtn, exportCopyBtn, exportJsonBtn, exportCancelBtn;
-  let favoriteBtn, renameBtn, tagBtn, exportBtn;
+  let deleteModal, deleteCancelBtn, deleteConfirmBtn;
+  let favoriteBtn, renameBtn, tagBtn, exportBtn, deleteBtn;
 
   // Current tags being edited (local copy while modal is open)
   let _editingTags = [];
@@ -39,11 +40,17 @@ window.Features = (function () {
     exportJsonBtn = document.getElementById('exportJsonBtn');
     exportCancelBtn = document.getElementById('exportCancelBtn');
 
+    // Delete modal elements
+    deleteModal = document.getElementById('deleteModal');
+    deleteCancelBtn = document.getElementById('deleteCancelBtn');
+    deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+
     // Header action buttons
     favoriteBtn = document.getElementById('favoriteBtn');
     renameBtn = document.getElementById('renameBtn');
     tagBtn = document.getElementById('tagBtn');
     exportBtn = document.getElementById('exportBtn');
+    deleteBtn = document.getElementById('deleteBtn');
 
     // --- Rename modal bindings ---
     if (renameBtn) {
@@ -109,6 +116,22 @@ window.Features = (function () {
       });
     }
 
+    // --- Delete modal bindings ---
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', openDeleteModal);
+    }
+    if (deleteCancelBtn) {
+      deleteCancelBtn.addEventListener('click', function () { closeModal(deleteModal); });
+    }
+    if (deleteConfirmBtn) {
+      deleteConfirmBtn.addEventListener('click', confirmDelete);
+    }
+    if (deleteModal) {
+      deleteModal.querySelector('.modal-overlay').addEventListener('click', function () {
+        closeModal(deleteModal);
+      });
+    }
+
     // --- Favorite button ---
     if (favoriteBtn) {
       favoriteBtn.addEventListener('click', toggleFavorite);
@@ -120,6 +143,7 @@ window.Features = (function () {
         if (renameModal && !renameModal.classList.contains('hidden')) closeModal(renameModal);
         if (tagModal && !tagModal.classList.contains('hidden')) closeTagModal();
         if (exportModal && !exportModal.classList.contains('hidden')) closeModal(exportModal);
+        if (deleteModal && !deleteModal.classList.contains('hidden')) closeModal(deleteModal);
       }
     });
   }
@@ -523,6 +547,60 @@ window.Features = (function () {
       favoriteBtn.classList.remove('active');
       favoriteBtn.innerHTML = '&#9734;'; // empty star
       favoriteBtn.title = 'Toggle Favorite';
+    }
+  }
+
+  // =======================================================================
+  // DELETE
+  // =======================================================================
+
+  function openDeleteModal() {
+    if (!deleteModal) return;
+
+    var App = window.App;
+    var chatTitle = document.getElementById('chatTitle');
+    var title = (chatTitle && chatTitle.textContent) || 'this session';
+
+    var msg = document.getElementById('deleteMessage');
+    if (msg) {
+      msg.textContent = 'Are you sure you want to delete "' + title + '"? It will be hidden from all lists.';
+    }
+
+    deleteModal.classList.remove('hidden');
+  }
+
+  async function confirmDelete() {
+    var App = window.App;
+    if (!App || !App.state) return;
+
+    var pid = App.state.currentProjectId;
+    var sid = App.state.currentSessionId;
+    if (!pid || !sid) return;
+
+    try {
+      await apiPut(
+        '/api/projects/' + encodeURIComponent(pid) +
+        '/sessions/' + encodeURIComponent(sid) + '/meta',
+        { isDeleted: true }
+      );
+
+      closeModal(deleteModal);
+      showToast('Session deleted');
+
+      // Navigate back to session list
+      if (typeof App.goBackToSessions === 'function') {
+        App.goBackToSessions();
+      } else if (window.Router && typeof window.Router.navigate === 'function') {
+        window.Router.navigate('project/' + encodeURIComponent(pid));
+      }
+
+      // Refresh session list
+      if (typeof App.loadSessions === 'function') {
+        App.loadSessions(pid);
+      }
+    } catch (err) {
+      console.error('Delete failed:', err);
+      showToast('Delete failed');
     }
   }
 

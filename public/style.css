@@ -1730,6 +1730,33 @@ canvas#tokenChart {
   border-color: var(--accent-hover);
 }
 
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+  border-color: #c82333;
+}
+
+.btn-danger-subtle {
+  color: #dc3545;
+}
+
+.btn-danger-subtle:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #ff4d5e;
+}
+
+.delete-message {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
 /* Tag Modal */
 .tag-input-row {
   display: flex;

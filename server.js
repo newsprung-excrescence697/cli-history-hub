@@ -135,6 +135,7 @@ function extractSessionMeta(filePath, sessionId, projectDir) {
     const customName = sidecar.customName || customNameFromJsonl || null;
     const tags = sidecar.tags || [];
     const isFavorite = sidecar.isFavorite || false;
+    const isDeleted = sidecar.isDeleted || false;
 
     return {
       sessionId,
@@ -148,6 +149,7 @@ function extractSessionMeta(filePath, sessionId, projectDir) {
       projectPath,
       tags,
       isFavorite,
+      isDeleted,
     };
   } catch {
     return null;
@@ -181,13 +183,13 @@ function scanProjectSessions(projectDir) {
     try { sidecarMtime = fs.statSync(sidecarPath).mtimeMs; } catch { /* no sidecar */ }
 
     if (cached && cached.mtime === stat.mtimeMs && cached.sidecarMtime === sidecarMtime) {
-      if (cached.data && cached.data.messageCount > 0) sessions.push(cached.data);
+      if (cached.data && cached.data.messageCount > 0 && !cached.data.isDeleted) sessions.push(cached.data);
       continue;
     }
 
     const meta = extractSessionMeta(filePath, sessionId, projectDir);
     sessionCache.set(cacheKey, { mtime: stat.mtimeMs, sidecarMtime, data: meta });
-    if (meta && meta.messageCount > 0) {
+    if (meta && meta.messageCount > 0 && !meta.isDeleted) {
       sessions.push(meta);
     }
   }
@@ -744,6 +746,7 @@ function extractCodexSessionMeta(filePath, sessionId, displayName) {
       projectPath: null,
       tags: sidecar.tags || [],
       isFavorite: sidecar.isFavorite || false,
+      isDeleted: sidecar.isDeleted || false,
       source: 'codex',
       model,
     };
@@ -846,7 +849,7 @@ app.get('/api/projects', (req, res) => {
       var sessionCount = 0;
       for (const sess of cp.sessions) {
         const meta = extractCodexSessionMeta(sess.filePath, sess.sessionId, sess.displayName);
-        if (meta && meta.messageCount > 0) sessionCount++;
+        if (meta && meta.messageCount > 0 && !meta.isDeleted) sessionCount++;
       }
       if (sessionCount === 0) continue;
 
@@ -883,7 +886,7 @@ app.get('/api/projects/:pid/sessions-full', (req, res) => {
       const sessions = [];
       for (const sess of cp.sessions) {
         const meta = extractCodexSessionMeta(sess.filePath, sess.sessionId, sess.displayName);
-        if (meta && meta.messageCount > 0) {
+        if (meta && meta.messageCount > 0 && !meta.isDeleted) {
           sessions.push(meta);
         }
       }
@@ -1024,12 +1027,13 @@ app.put('/api/projects/:pid/sessions/:sid/meta', (req, res) => {
       cacheKey = jsonlPath;
     }
 
-    const { customName, tags, isFavorite } = req.body;
+    const { customName, tags, isFavorite, isDeleted } = req.body;
     const existing = readSidecarMeta(sidecarDir, sid);
 
     if (customName !== undefined) existing.customName = customName;
     if (tags !== undefined) existing.tags = tags;
     if (isFavorite !== undefined) existing.isFavorite = isFavorite;
+    if (isDeleted !== undefined) existing.isDeleted = isDeleted;
     existing.updatedAt = new Date().toISOString();
 
     writeSidecarMeta(sidecarDir, sid, existing);
@@ -1082,6 +1086,7 @@ app.get('/api/search', (req, res) => {
 
         // Get session display name
         const sidecar = readSidecarMeta(dirPath, sessionId);
+        if (sidecar.isDeleted) continue;
         let sessionName = sidecar.customName || null;
 
         for (const line of content.split('\n')) {
@@ -1156,6 +1161,10 @@ app.get('/api/search', (req, res) => {
       for (const cp of targetCodex) {
         for (const sess of cp.sessions) {
           if (results.length >= MAX_RESULTS) break outerCodex;
+
+          // Skip deleted Codex sessions
+          const codexSidecar = readSidecarMeta(CODEX_SESSIONS_DIR, sess.sessionId);
+          if (codexSidecar.isDeleted) continue;
 
           let content;
           try { content = fs.readFileSync(sess.filePath, 'utf-8'); } catch { continue; }
@@ -1247,6 +1256,10 @@ app.get('/api/stats', (req, res) => {
       let projectSessionCount = 0;
 
       for (const file of files) {
+        const sessionId = file.replace('.jsonl', '');
+        const sidecar = readSidecarMeta(dirPath, sessionId);
+        if (sidecar.isDeleted) continue;
+
         const filePath = path.join(dirPath, file);
         let content;
         try { content = fs.readFileSync(filePath, 'utf-8'); } catch { continue; }
@@ -1333,6 +1346,10 @@ app.get('/api/stats', (req, res) => {
       let projectSessionCount = 0;
 
       for (const sess of cp.sessions) {
+        // Skip deleted Codex sessions
+        const codexStatsSidecar = readSidecarMeta(CODEX_SESSIONS_DIR, sess.sessionId);
+        if (codexStatsSidecar.isDeleted) continue;
+
         let content;
         try { content = fs.readFileSync(sess.filePath, 'utf-8'); } catch { continue; }
 
@@ -1567,7 +1584,7 @@ app.get('/api/timeline', (req, res) => {
 
       for (const sess of cp.sessions) {
         const meta = extractCodexSessionMeta(sess.filePath, sess.sessionId, sess.displayName);
-        if (!meta || meta.messageCount === 0) continue;
+        if (!meta || meta.messageCount === 0 || meta.isDeleted) continue;
 
         const dateStr = meta.created
           ? new Date(meta.created).toISOString().split('T')[0]
@@ -1601,6 +1618,10 @@ app.get('/api/timeline', (req, res) => {
       } catch { continue; }
 
       for (const file of files) {
+        const timelineSessionId = file.replace('.jsonl', '');
+        const timelineSidecar = readSidecarMeta(dirPath, timelineSessionId);
+        if (timelineSidecar.isDeleted) continue;
+
         const filePath = path.join(dirPath, file);
         let content;
         try { content = fs.readFileSync(filePath, 'utf-8'); } catch { continue; }

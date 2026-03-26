@@ -335,7 +335,8 @@ CLI History Hub 后端提供 10 个 RESTful API 端点，全部定义在 `server
 {
   "customName": "新名称",
   "tags": ["tag1", "tag2"],
-  "isFavorite": true
+  "isFavorite": true,
+  "isDeleted": true
 }
 ```
 
@@ -348,6 +349,7 @@ CLI History Hub 后端提供 10 个 RESTful API 端点，全部定义在 `server
     "customName": "新名称",
     "tags": ["tag1", "tag2"],
     "isFavorite": true,
+    "isDeleted": true,
     "updatedAt": "2026-03-19T12:00:00Z"
   }
 }

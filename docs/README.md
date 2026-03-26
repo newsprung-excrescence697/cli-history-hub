@@ -33,7 +33,7 @@ node server.js
 
 ### 管理会话
 
-- [会话管理](session-management.md) - 重命名、收藏/置顶、标签管理
+- [会话管理](session-management.md) - 重命名、收藏/置顶、标签管理、删除（软删除）
 - [导出](export.md) - Markdown/JSON 文件下载、剪贴板复制
 - [恢复会话](conversation-detail.md#恢复会话) - 一键打开终端恢复 CLI 会话（Claude --resume / Codex resume）
 

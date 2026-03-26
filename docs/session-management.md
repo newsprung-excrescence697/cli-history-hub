@@ -76,6 +76,32 @@
 - 会话卡片底部显示彩色标签
 - 列表内搜索可匹配标签文本
 
+### 删除（软删除）
+
+将会话标记为已删除，从所有列表、搜索、统计和时间线中隐藏。JSONL 原始文件不会被修改或删除。
+
+**触发：** 详情页头部的删除按钮（&#128465; Delete）
+
+**流程：**
+1. 点击删除按钮，弹出确认弹窗
+2. 弹窗显示会话标题，提示删除后将从所有列表中隐藏
+3. 点击 Delete 确认删除
+4. 调用 `PUT /api/.../meta` 写入 `{ isDeleted: true }`
+5. 显示 Toast 提示 "Session deleted"
+6. 自动返回会话列表页
+7. 刷新会话列表（已删除的会话不再显示）
+
+**取消：** 点 Cancel / 点遮罩层 / 按 Escape
+
+**过滤范围：** 被删除的会话在以下位置被过滤：
+- 项目列表中的会话数量统计
+- 会话列表（sessions-full）
+- 全局搜索结果
+- 统计面板数据
+- 时间线热力图
+
+**数据存储：** sidecar 的 `isDeleted: true` 字段标记软删除
+
 ## 涉及的代码
 
 | 位置 | 文件 | 关键函数/行号 |
@@ -83,6 +109,7 @@
 | 前端 | public/modules/features.js:131-178 | 重命名：`openRenameModal()`, `saveRename()` |
 | 前端 | public/modules/features.js:184-331 | 标签：`openTagModal()`, `closeTagModal()`, `addTagFromInput()`, `removeTag()`, `renderTagList()`, `renderTagSuggestions()` |
 | 前端 | public/modules/features.js:479-527 | 收藏：`toggleFavorite()`, `updateFavoriteButton()` |
+| 前端 | public/modules/features.js | 删除：`openDeleteModal()`, `confirmDelete()` |
 | 前端 | public/modules/features.js:533-601 | 通用：`closeModal()`, `showToast()`, `apiPut()` |
 | 前端 | public/app.js:665-674 | `updateFavoriteButton()` (App 侧的外观更新) |
 | 后端 | server.js | `PUT /api/projects/:pid/sessions/:sid/meta`（支持 Claude 和 Codex 会话） |
@@ -119,8 +146,9 @@
 ## 已知问题 / TODO
 
 - [ ] 只能在详情页管理会话，不能在列表页操作
-- [ ] 没有批量操作（批量打标签、批量收藏）
+- [ ] 没有批量操作（批量打标签、批量收藏、批量删除）
 - [ ] 标签没有颜色区分
 - [ ] 标签建议没有按使用频率排序
 - [ ] 重命名没有长度限制校验
 - [ ] `updateFavoriteButton()` 在 `features.js` 和 `app.js` 中有两份实现
+- [ ] 软删除的会话没有恢复入口
